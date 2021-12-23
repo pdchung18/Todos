@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Modal from 'react-bootstrap/Modal'
-import FormsTodosChange from '@/forms/todos/Change'
+
+import FormsTodosChange from '@/forms/items/Change'
 
 const initialValues = {
   title: '',
@@ -10,13 +11,13 @@ const initialValues = {
       name: '',
       checked: false
     }
-  ],
+  ]
 }
 
-const ModalsTodosCreate = ({ close, onSubmit, title, TodoItems }) => (
+const ModalsItemsCreate = ({ close, onSubmit, title, TodoItems }) => (
   <Modal show onHide={close}>
     <Modal.Header closeButton>
-      <Modal.Title>Create Todo</Modal.Title>
+      <Modal.Title>Create Items</Modal.Title>
     </Modal.Header>
     <Modal.Body>
       <FormsTodosChange
@@ -26,11 +27,9 @@ const ModalsTodosCreate = ({ close, onSubmit, title, TodoItems }) => (
     </Modal.Body>
   </Modal>
 );
-
-ModalsTodosCreate.propTypes = {
+ModalsItemsCreate.propTypes = {
   close: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  title: PropTypes.string
 }
 
-export default ModalsTodosCreate
+export default ModalsItemsCreate

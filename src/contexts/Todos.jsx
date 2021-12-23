@@ -45,12 +45,12 @@ const api = (dispatch) => ({
   resetTodo: () => {
     dispatch(actions.unsetTodo())
   },
-  updateTodo: ({id, title}) => new Promise((resolve, reject) => axios({
+  updateTodo: ({id, title, TodoItems }) => new Promise((resolve, reject) => axios({
     method: 'PUT',
     url: `https://fswdi-api-todos.herokuapp.com/api/todos/${id}`,
-    data: { title }
+    data: { title, TodoItems }
   }).then((resp) => {
-    dispatch(actions.updateTodo(resp.data.todo.title))
+    dispatch(actions.updateTodo(resp.data.todo))
     resolve(resp)
   }).catch((err) => {
     reject(err)
@@ -96,7 +96,9 @@ const reducer = (state, action) => {
     }
     case 'updateTodo': {
       return produce(state, (draft) => {
-        draft.show.todo.title = action.payload
+        console.log(action.payload);
+        draft.show.todo.title = action.payload.title
+        draft.show.todo.TodoItems = action.payload.TodoItems
       })
     }
     default: {
