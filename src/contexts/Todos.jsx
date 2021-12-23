@@ -25,7 +25,7 @@ const api = (dispatch) => ({
   createTodo: (values) => new Promise((resolve, reject) => axios({
     method: 'POST',
     url: 'https://fswdi-api-todos.herokuapp.com/api/todos',
-    data: values
+    data: { ...values, TodoItems: [] }
   }).then((resp) => {
     resolve(resp)
   }).catch((err) => {
