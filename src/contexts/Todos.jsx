@@ -96,7 +96,7 @@ const reducer = (state, action) => {
     }
     case 'updateTodo': {
       return produce(state, (draft) => {
-        draft.show.title = action.payload
+        draft.show.todo.title = action.payload
       })
     }
     default: {
