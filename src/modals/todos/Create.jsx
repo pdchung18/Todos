@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal'
 import FormsTodosChange from '@/forms/todos/Change'
 
 const initialValues = {
-  title: '',
+  title: ''
 }
 
 const ModalsTodosCreate = ({ close, onSubmit, title = '', TodoItems = [] }) => (
@@ -25,7 +25,7 @@ ModalsTodosCreate.propTypes = {
   close: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  TodoItems: PropTypes.shape([])
+  TodoItems: PropTypes.array
 }
 
 export default ModalsTodosCreate

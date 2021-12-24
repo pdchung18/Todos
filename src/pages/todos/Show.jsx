@@ -64,6 +64,21 @@ class PagesTodosShow extends React.Component {
     updateTodo({ id, title, TodoItems: todoList }).then(() => {})
   }
 
+  handleEditItems(values) {
+    const { id } = this.props.match.params
+    const { updateTodo } = api(this.context.dispatch)
+    const { title, TodoItems } = this.context.todos.show.todo
+    const todoList = [...TodoItems]
+    if (this.state.editItem.index !== null) {
+      todoList[this.state.editItem.index] = values
+    } else {
+      todoList.push(values)
+    }
+    updateTodo({ id, title, TodoItems: todoList }).then(() => {
+      this.closeItemsModal()
+    })
+  }
+
   openTodoModal() {
     this.setState({ showModalsTodosCreate: true })
   }
@@ -97,21 +112,6 @@ class PagesTodosShow extends React.Component {
     const todoList = [...TodoItems]
     todoList.splice(index, 1)
     updateTodo({ id, title, TodoItems: todoList }).then(() => {})
-  }
-
-  handleEditItems(values) {
-    const { id } = this.props.match.params
-    const { updateTodo } = api(this.context.dispatch)
-    const { title, TodoItems } = this.context.todos.show.todo
-    const todoList = [...TodoItems]
-    if (this.state.editItem.index !== null) {
-      todoList[this.state.editItem.index] = values
-    } else {
-      todoList.push(values)
-    }
-    updateTodo({ id, title, TodoItems: todoList }).then(() => {
-      this.closeItemsModal()
-    })
   }
 
   renderShow() {
@@ -192,11 +192,11 @@ class PagesTodosShow extends React.Component {
               this.setState({
                 editItem: {
                   index: null,
-                  name: "",
-                  checked: false,
-                },
-              });
-              this.openItemsModal("create");
+                  name: '',
+                  checked: false
+                }
+              })
+              this.openItemsModal('create')
             }}
           >
             Add Item
@@ -231,11 +231,11 @@ class PagesTodosShow extends React.Component {
             onSubmit={this.handleEditItems}
             name={editItem.name}
             checked={editItem.checked}
-            create={itemModalMode === "create"}
+            create={itemModalMode === 'create'}
           />
         )}
       </div>
-    );
+    )
   }
 }
 
