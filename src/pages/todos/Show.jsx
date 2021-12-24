@@ -104,10 +104,9 @@ class PagesTodosShow extends React.Component {
     const { updateTodo } = api(this.context.dispatch)
     const { title, TodoItems } = this.context.todos.show.todo
     const todoList = [...TodoItems]
-    if(this.state.editItem.index !== null){  
+    if (this.state.editItem.index !== null) {
       todoList[this.state.editItem.index] = values
-    }
-    else{
+    } else {
       todoList.push(values)
     }
     updateTodo({ id, title, TodoItems: todoList }).then(() => {
@@ -130,7 +129,7 @@ class PagesTodosShow extends React.Component {
             <div
               key={item.id}
               className={`list-group-item list-group-item-action d-flex justify-content-between align-items-center ${
-                item.checked ? "text-decoration-through" : ""
+                item.checked ? 'text-decoration-through' : ''
               }`}
             >
               <input
@@ -146,12 +145,12 @@ class PagesTodosShow extends React.Component {
                   onClick={() => {
                     this.setState({
                       editItem: {
-                        index: index,
+                        index,
                         name: item.name,
-                        checked: item.checked,
-                      },
-                    });
-                    this.openItemsModal("edit");
+                        checked: item.checked
+                      }
+                    })
+                    this.openItemsModal('edit')
                   }}
                 >
                   Edit
@@ -168,7 +167,7 @@ class PagesTodosShow extends React.Component {
           ))}
         </div>
       </>
-    );
+    )
   }
 
   render() {

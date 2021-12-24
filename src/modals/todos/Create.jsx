@@ -5,12 +5,6 @@ import FormsTodosChange from '@/forms/todos/Change'
 
 const initialValues = {
   title: '',
-  TodoItems: [
-    {
-      name: '',
-      checked: false
-    }
-  ]
 }
 
 const ModalsTodosCreate = ({ close, onSubmit, title = '', TodoItems = [] }) => (
