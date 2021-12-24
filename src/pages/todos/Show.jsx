@@ -12,6 +12,12 @@ class PagesTodosShow extends React.Component {
     super(props)
 
     this.state = {
+      itemModalMode: 'create',
+      editItem: {
+        index: null,
+        name: '',
+        checked: false
+      },
       showModalsTodosCreate: false,
       showModalsItemsCreate: false
     }
@@ -24,6 +30,7 @@ class PagesTodosShow extends React.Component {
     this.closeItemsModal = this.closeItemsModal.bind(this)
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this)
     this.deleteItem = this.deleteItem.bind(this)
+    this.handleEditItems = this.handleEditItems.bind(this)
   }
 
   componentDidMount() {
@@ -43,7 +50,6 @@ class PagesTodosShow extends React.Component {
 
     updateTodo({ id, ...values }).then(() => {
       this.closeTodoModal()
-      this.closeItemsModal()
     })
   }
 
@@ -51,13 +57,11 @@ class PagesTodosShow extends React.Component {
     const { title, TodoItems } = this.context.todos.show.todo
     const { id } = this.props.match.params
     const { updateTodo } = api(this.context.dispatch)
-    const todoList = [...TodoItems]    
-    const item = {...todoList[index]}
+    const todoList = [...TodoItems]
+    const item = { ...todoList[index] }
     item.checked = e.target.checked
     todoList[index] = item
-    updateTodo({ id, title, TodoItems: todoList }).then(() => {
-
-    })
+    updateTodo({ id, title, TodoItems: todoList }).then(() => {})
   }
 
   openTodoModal() {
@@ -77,7 +81,8 @@ class PagesTodosShow extends React.Component {
     })
   }
 
-  openItemsModal() {
+  openItemsModal(mode) {
+    this.setState({ itemModalMode: mode })
     this.setState({ showModalsItemsCreate: true })
   }
 
@@ -91,8 +96,22 @@ class PagesTodosShow extends React.Component {
     const { title, TodoItems } = this.context.todos.show.todo
     const todoList = [...TodoItems]
     todoList.splice(index, 1)
-    updateTodo({ id, title, TodoItems: todoList }).then(() => {
+    updateTodo({ id, title, TodoItems: todoList }).then(() => {})
+  }
 
+  handleEditItems(values) {
+    const { id } = this.props.match.params
+    const { updateTodo } = api(this.context.dispatch)
+    const { title, TodoItems } = this.context.todos.show.todo
+    const todoList = [...TodoItems]
+    if(this.state.editItem.index !== null){  
+      todoList[this.state.editItem.index] = values
+    }
+    else{
+      todoList.push(values)
+    }
+    updateTodo({ id, title, TodoItems: todoList }).then(() => {
+      this.closeItemsModal()
     })
   }
 
@@ -111,15 +130,29 @@ class PagesTodosShow extends React.Component {
             <div
               key={item.id}
               className={`list-group-item list-group-item-action d-flex justify-content-between align-items-center ${
-                item.checked ? 'text-decoration-through' : ''
+                item.checked ? "text-decoration-through" : ""
               }`}
             >
-              <input type="checkbox" defaultChecked={item.checked} onChange={(e) => this.handleCheckboxChange(e, index)} />
+              <input
+                type="checkbox"
+                defaultChecked={item.checked}
+                onChange={(e) => this.handleCheckboxChange(e, index)}
+              />
               {item.name}
               <div>
                 <button
                   className="btn btn-primary mr-2"
                   type="button"
+                  onClick={() => {
+                    this.setState({
+                      editItem: {
+                        index: index,
+                        name: item.name,
+                        checked: item.checked,
+                      },
+                    });
+                    this.openItemsModal("edit");
+                  }}
                 >
                   Edit
                 </button>
@@ -135,11 +168,11 @@ class PagesTodosShow extends React.Component {
           ))}
         </div>
       </>
-    )
+    );
   }
 
   render() {
-    const { showModalsTodosCreate, showModalsItemsCreate } = this.state
+    const { editItem, itemModalMode, showModalsTodosCreate, showModalsItemsCreate } = this.state
     const { show } = this.context.todos
 
     return (
@@ -156,7 +189,7 @@ class PagesTodosShow extends React.Component {
           <button
             className="btn btn-success mb-3 mr-2"
             type="button"
-            onClick={this.openItemsModal}
+            onClick={() => this.openItemsModal('create')}
           >
             Add Item
           </button>
@@ -187,9 +220,10 @@ class PagesTodosShow extends React.Component {
         {showModalsItemsCreate && (
           <ModalsItemsCreate
             close={this.closeItemsModal}
-            onSubmit={this.handleEditSubmit}
-            title={show.todo.title}
-            TodoItems={show.todo.TodoItems}
+            onSubmit={this.handleEditItems}
+            name={editItem.name}
+            checked={editItem.checked}
+            create={itemModalMode === 'create'}
           />
         )}
       </div>

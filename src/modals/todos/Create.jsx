@@ -30,7 +30,8 @@ const ModalsTodosCreate = ({ close, onSubmit, title = '', TodoItems = [] }) => (
 ModalsTodosCreate.propTypes = {
   close: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
+  TodoItems: PropTypes.shape([])
 }
 
 export default ModalsTodosCreate

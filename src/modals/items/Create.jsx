@@ -5,23 +5,18 @@ import Modal from 'react-bootstrap/Modal'
 import FormsTodosChange from '@/forms/items/Change'
 
 const initialValues = {
-  title: '',
-  TodoItems: [
-    {
-      name: '',
-      checked: false
-    }
-  ]
+  name: '',
+  checked: false
 }
 
-const ModalsItemsCreate = ({ close, onSubmit, title = '', TodoItems = [] }) => (
+const ModalsItemsCreate = ({ close, onSubmit, create, name = '', checked = false }) => (
   <Modal show onHide={close}>
     <Modal.Header closeButton>
       <Modal.Title>Create Items</Modal.Title>
     </Modal.Header>
     <Modal.Body>
       <FormsTodosChange
-        initialValues={title ? { title, TodoItems } : initialValues}
+        initialValues={create ? initialValues : { name, checked }}
         onSubmit={onSubmit}
       />
     </Modal.Body>
@@ -30,7 +25,9 @@ const ModalsItemsCreate = ({ close, onSubmit, title = '', TodoItems = [] }) => (
 ModalsItemsCreate.propTypes = {
   close: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired
+  create: PropTypes.bool.isRequired,
+  name: PropTypes.string.isRequired,
+  checked: PropTypes.bool.isRequired
 }
 
 export default ModalsItemsCreate
