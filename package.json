@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/server.jsx",
     "heroku-postbuild": "webpack build --mode production --config config/webpack.prod.js --progress",
-    "serve": "webpack serve --mode development --config config/webpack.dev.js --progress"
+    "serve": "webpack serve --mode development --config config/webpack.dev.js --progress",
+    "lint": "eslint --fix --ext .js,.jsx ."
   },
   "author": "",
   "license": "ISC",
