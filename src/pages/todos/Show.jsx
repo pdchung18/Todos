@@ -188,7 +188,16 @@ class PagesTodosShow extends React.Component {
           <button
             className="btn btn-success mb-3 mr-2"
             type="button"
-            onClick={() => this.openItemsModal('create')}
+            onClick={() => {
+              this.setState({
+                editItem: {
+                  index: null,
+                  name: "",
+                  checked: false,
+                },
+              });
+              this.openItemsModal("create");
+            }}
           >
             Add Item
           </button>
@@ -222,11 +231,11 @@ class PagesTodosShow extends React.Component {
             onSubmit={this.handleEditItems}
             name={editItem.name}
             checked={editItem.checked}
-            create={itemModalMode === 'create'}
+            create={itemModalMode === "create"}
           />
         )}
       </div>
-    )
+    );
   }
 }
 
