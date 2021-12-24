@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Formik, Field, Form, FieldArray, ErrorMessage } from 'formik'
+import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as yup from 'yup'
 
 const RenderForm = ({ errors, touched, isSubmitting }) => (
@@ -9,7 +9,7 @@ const RenderForm = ({ errors, touched, isSubmitting }) => (
       <Field
         id="name"
         className={`form-control ${
-          errors.name && touched.name ? " is-invalid" : ""
+          errors.name && touched.name ? ' is-invalid' : ''
         }`}
         name="name"
         type="text"
@@ -40,7 +40,7 @@ const RenderForm = ({ errors, touched, isSubmitting }) => (
       Submit
     </button>
   </Form>
-);
+)
 RenderForm.propTypes = {
   errors: PropTypes.shape().isRequired,
   touched: PropTypes.shape().isRequired,

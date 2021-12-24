@@ -13,7 +13,7 @@ class PagesTodosShow extends React.Component {
 
     this.state = {
       showModalsTodosCreate: false,
-      showModalsItemsCreate: false,
+      showModalsItemsCreate: false
     }
 
     this.handleEditSubmit = this.handleEditSubmit.bind(this)
@@ -22,6 +22,8 @@ class PagesTodosShow extends React.Component {
     this.deleteTodos = this.deleteTodos.bind(this)
     this.openItemsModal = this.openItemsModal.bind(this)
     this.closeItemsModal = this.closeItemsModal.bind(this)
+    this.handleCheckboxChange = this.handleCheckboxChange.bind(this)
+    this.deleteItem = this.deleteItem.bind(this)
   }
 
   componentDidMount() {
@@ -35,40 +37,26 @@ class PagesTodosShow extends React.Component {
     resetTodo()
   }
 
-  renderShow() {
-    const { show } = this.context.todos
-
-    if (show === undefined) return <Loading />
-    if (show === null) return <h2>Not Found</h2>
-    return (
-      <>
-        <h2 className="my-3">
-          {show.todo.id} | {show.todo.title}
-        </h2>
-        <div className="list-group">
-          {show.todo.TodoItems.map((item) => (
-            <div
-              key={item.id}
-              className={`list-group-item list-group-item-action d-flex justify-content-between ${
-                item.checked ? "text-decoration-through" : ""
-              }`}
-            >
-              {item.name}
-              <input type="checkbox" checked={item.checked} />
-            </div>
-          ))}
-        </div>
-      </>
-    );
-  }
-
   handleEditSubmit(values) {
     const { id } = this.props.match.params
     const { updateTodo } = api(this.context.dispatch)
 
     updateTodo({ id, ...values }).then(() => {
-      this.closeTodoModal();
-      this.closeItemsModal();
+      this.closeTodoModal()
+      this.closeItemsModal()
+    })
+  }
+
+  handleCheckboxChange(e, index) {
+    const { title, TodoItems } = this.context.todos.show.todo
+    const { id } = this.props.match.params
+    const { updateTodo } = api(this.context.dispatch)
+    const todoList = [...TodoItems]    
+    const item = {...todoList[index]}
+    item.checked = e.target.checked
+    todoList[index] = item
+    updateTodo({ id, title, TodoItems: todoList }).then(() => {
+
     })
   }
 
@@ -95,6 +83,59 @@ class PagesTodosShow extends React.Component {
 
   closeItemsModal() {
     this.setState({ showModalsItemsCreate: false })
+  }
+
+  deleteItem(index) {
+    const { id } = this.props.match.params
+    const { updateTodo } = api(this.context.dispatch)
+    const { title, TodoItems } = this.context.todos.show.todo
+    const todoList = [...TodoItems]
+    todoList.splice(index, 1)
+    updateTodo({ id, title, TodoItems: todoList }).then(() => {
+
+    })
+  }
+
+  renderShow() {
+    const { show } = this.context.todos
+
+    if (show === undefined) return <Loading />
+    if (show === null) return <h2>Not Found</h2>
+    return (
+      <>
+        <h2 className="my-3">
+          {show.todo.id} | {show.todo.title}
+        </h2>
+        <div className="list-group">
+          {show.todo.TodoItems.map((item, index) => (
+            <div
+              key={item.id}
+              className={`list-group-item list-group-item-action d-flex justify-content-between align-items-center ${
+                item.checked ? 'text-decoration-through' : ''
+              }`}
+            >
+              <input type="checkbox" defaultChecked={item.checked} onChange={(e) => this.handleCheckboxChange(e, index)} />
+              {item.name}
+              <div>
+                <button
+                  className="btn btn-primary mr-2"
+                  type="button"
+                >
+                  Edit
+                </button>
+                <button
+                  className="btn btn-danger mr-2"
+                  type="button"
+                  onClick={() => this.deleteItem(index)}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </>
+    )
   }
 
   render() {
@@ -152,7 +193,7 @@ class PagesTodosShow extends React.Component {
           />
         )}
       </div>
-    );
+    )
   }
 }
 

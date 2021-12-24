@@ -10,27 +10,27 @@ const initialValues = {
       name: '',
       checked: false
     }
-  ],
+  ]
 }
 
-const ModalsTodosCreate = ({ close, onSubmit, title, TodoItems }) => (
+const ModalsTodosCreate = ({ close, onSubmit, title = '', TodoItems = [] }) => (
   <Modal show onHide={close}>
     <Modal.Header closeButton>
       <Modal.Title>Create Todo</Modal.Title>
     </Modal.Header>
     <Modal.Body>
       <FormsTodosChange
-        initialValues={!!title ? { title, TodoItems } : initialValues}
+        initialValues={title ? { title, TodoItems } : initialValues}
         onSubmit={onSubmit}
       />
     </Modal.Body>
   </Modal>
-);
+)
 
 ModalsTodosCreate.propTypes = {
   close: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  title: PropTypes.string
+  title: PropTypes.string.isRequired
 }
 
 export default ModalsTodosCreate

@@ -8,62 +8,79 @@ const actions = {
   unsetTodos: () => ({ type: 'unsetTodos' }),
   setTodo: (payload) => ({ type: 'setTodo', payload }),
   unsetTodo: () => ({ type: 'unsetTodo' }),
-  updateTodo: (payload) => ({type: 'updateTodo', payload}),
+  updateTodo: (payload) => ({ type: 'updateTodo', payload })
 }
 
 const api = (dispatch) => ({
   getTodos: () => {
     axios({
-      method: 'GET',
-      url: 'https://fswdi-api-todos.herokuapp.com/api/todos'
+      method: "GET",
+      url: "https://fswdi-api-todos.herokuapp.com/api/todos",
     }).then((resp) => {
-      dispatch(actions.setTodos(resp.data))
-    })
+      dispatch(actions.setTodos(resp.data));
+    });
   },
   resetTodos: () => {
-    dispatch(actions.unsetTodos())
+    dispatch(actions.unsetTodos());
   },
-  createTodo: (values) => new Promise((resolve, reject) => axios({
-    method: 'POST',
-    url: 'https://fswdi-api-todos.herokuapp.com/api/todos',
-    data: values
-  }).then((resp) => {
-    resolve(resp)
-  }).catch((err) => {
-    reject(err)
-  })),
+  createTodo: (values) =>
+    new Promise((resolve, reject) =>
+      axios({
+        method: "POST",
+        url: "https://fswdi-api-todos.herokuapp.com/api/todos",
+        data: values,
+      })
+        .then((resp) => {
+          resolve(resp);
+        })
+        .catch((err) => {
+          reject(err);
+        })
+    ),
   getTodo: (TodoId) => {
     axios({
-      method: 'GET',
-      url: `https://fswdi-api-todos.herokuapp.com/api/todos/${TodoId}`
-    }).then((resp) => {
-      dispatch(actions.setTodo(resp.data))
-    }).catch(() => {
-      dispatch(actions.setTodo({ todo: null }))
+      method: "GET",
+      url: `https://fswdi-api-todos.herokuapp.com/api/todos/${TodoId}`,
     })
+      .then((resp) => {
+        dispatch(actions.setTodo(resp.data));
+      })
+      .catch(() => {
+        dispatch(actions.setTodo({ todo: null }));
+      });
   },
   resetTodo: () => {
-    dispatch(actions.unsetTodo())
+    dispatch(actions.unsetTodo());
   },
-  updateTodo: ({id, title, TodoItems }) => new Promise((resolve, reject) => axios({
-    method: 'PUT',
-    url: `https://fswdi-api-todos.herokuapp.com/api/todos/${id}`,
-    data: { title, TodoItems }
-  }).then((resp) => {
-    dispatch(actions.updateTodo(resp.data.todo))
-    resolve(resp)
-  }).catch((err) => {
-    reject(err)
-  })),
-  deleteTodo: ({id}) => new Promise((resolve, reject) => axios({
-    method: 'DELETE',
-    url: `https://fswdi-api-todos.herokuapp.com/api/todos/${id}`,
-  }).then((resp) => {
-    resolve(resp)
-  }).catch((err) => {
-    reject(err)
-  })),
-})
+  updateTodo: ({ id, title, TodoItems }) =>
+    new Promise((resolve, reject) =>
+      axios({
+        method: "PUT",
+        url: `https://fswdi-api-todos.herokuapp.com/api/todos/${id}`,
+        data: { title, TodoItems },
+      })
+        .then((resp) => {
+          dispatch(actions.updateTodo(resp.data.todo));
+          resolve(resp);
+        })
+        .catch((err) => {
+          reject(err);
+        })
+    ),
+  deleteTodo: ({ id }) =>
+    new Promise((resolve, reject) =>
+      axios({
+        method: "DELETE",
+        url: `https://fswdi-api-todos.herokuapp.com/api/todos/${id}`,
+      })
+        .then((resp) => {
+          resolve(resp);
+        })
+        .catch((err) => {
+          reject(err);
+        })
+    )
+});
 
 const initialState = {
   meta: null,
@@ -96,7 +113,6 @@ const reducer = (state, action) => {
     }
     case 'updateTodo': {
       return produce(state, (draft) => {
-        console.log(action.payload);
         draft.show.todo.title = action.payload.title
         draft.show.todo.TodoItems = action.payload.TodoItems
       })

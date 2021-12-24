@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Formik, Field, Form, FieldArray, ErrorMessage } from 'formik'
+import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as yup from 'yup'
 
 const RenderForm = ({ errors, touched, isSubmitting }) => (
@@ -26,7 +26,7 @@ RenderForm.propTypes = {
 }
 
 const todoChangeSchema = yup.object().shape({
-  title: yup.string().required('Required'),
+  title: yup.string().required('Required')
 })
 
 const FormsTodosChange = ({ initialValues, onSubmit }) => (
